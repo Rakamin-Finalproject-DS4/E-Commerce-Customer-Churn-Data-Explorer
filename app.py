@@ -240,32 +240,32 @@ def rerun_app():
         raise RerunException(RerunData())
 
 
-def get_business_insight(churn_prob: float, preferences: dict) -> tuple[str, str]:
-    if churn_prob >= 0.8:
+def get_business_insight(label: int, churn_prob: float, preferences: dict) -> tuple[str, str]:
+    if label == 1:
+        if churn_prob >= 0.8:
+            return (
+                'Churn sangat mungkin',
+                'Terapkan retensi proaktif segera: tawarkan paket loyalitas, diskon personal, atau kampanye re-engagement.'
+            )
         return (
-            'Risiko churn sangat tinggi',
-            'Prioritaskan retention proaktif: tawarkan diskon khusus atau paket loyalitas untuk pelanggan ini.'
-        )
-    if churn_prob >= 0.55:
-        return (
-            'Risiko churn sedang',
-            'Berikan promosi personal dan komunikasi segar, terutama untuk pelanggan dengan preferensi pembayaran digital.'
+            'Churn terdeteksi',
+            'Fokus pada intervensi retention dengan dukungan personalisasi dan komunikasi yang relevan.'
         )
     return (
-        'Risiko churn rendah',
-        'Pertahankan engagement dengan penawaran eksklusif dan konten relevan untuk meningkatkan loyalitas.'
+        'Churn tidak terdeteksi',
+        'Pelanggan stabil. Pertahankan kualitas layanan dan manfaatkan kesempatan upsell atau cross-sell.'
     )
 
 
 def build_kpi_cards(churn_prob: float, has_prediction: bool):
-    churn_percent = f'{churn_prob * 100:.1f}%' if has_prediction else '-'
+    churn_status = 'Churn' if has_prediction and churn_prob >= 0.5 else 'No Churn' if has_prediction else '-'
     potential_loss = format_currency(churn_prob * 1500000) if has_prediction else 'Rp -'
     priority = 'High' if has_prediction and churn_prob >= 0.75 else 'Medium' if has_prediction and churn_prob >= 0.5 else 'Low'
 
     cards = st.columns(3)
     with cards[0]:
         st.markdown('<div class="kpi-card"><div class="kpi-title">Prediksi Churn</div><div class="kpi-value">'
-                    f'{churn_percent}</div><div class="kpi-sub">Chance based on current profile</div></div>', unsafe_allow_html=True)
+                    f'{churn_status}</div><div class="kpi-sub">Status churn berdasarkan model</div></div>', unsafe_allow_html=True)
     with cards[1]:
         st.markdown('<div class="kpi-card"><div class="kpi-title">Potensi Kerugian Finansial</div><div class="kpi-value">'
                     f'{potential_loss}</div><div class="kpi-sub">Estimasi dampak jika churn tidak ditangani</div></div>', unsafe_allow_html=True)
@@ -295,29 +295,8 @@ def make_prediction_chart(churn_prob: float):
     if churn_prob is None:
         st.info('Hasil prediksi akan muncul setelah Anda menekan tombol Predict.')
         return
-    colors = ['#F39C12', '#FFB347']
-    fig = go.Figure(go.Indicator(
-        mode='gauge+number',
-        value=churn_prob * 100,
-        number={'suffix': '%', 'font': {'color': '#FFD166'}},
-        gauge={
-            'axis': {'range': [0, 100], 'tickcolor': '#94a3b8'},
-            'bar': {'color': '#F39C12', 'thickness': 0.35},
-            'bgcolor': 'rgba(255,255,255,0.04)',
-            'borderwidth': 0,
-            'steps': [
-                {'range': [0, 50], 'color': 'rgba(243,156,18,0.12)'},
-                {'range': [50, 75], 'color': 'rgba(243,156,18,0.22)'},
-                {'range': [75, 100], 'color': 'rgba(243,156,18,0.34)'}
-            ]
-        }
-    ))
-    fig.update_layout(
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        margin={'t': 0, 'b': 0, 'l': 0, 'r': 0}
-    )
-    st.plotly_chart(fig, use_container_width=True)
+    churn_status = 'Churn' if churn_prob >= 0.5 else 'No Churn'
+    st.markdown(f'<div class="glass-card-small"><h4>Prediksi Status</h4><p style="font-size:28px;margin:0;">{churn_status}</p></div>', unsafe_allow_html=True)
 
 
 def show_batch_preview(data: pd.DataFrame):
@@ -392,7 +371,7 @@ def main():
                             label, proba = predict_input(input_data, model, preprocessor, scaler)
                             churn_probability = proba
                             prediction_result = 'Churn' if label == 1 else 'No Churn'
-                            insight_label, insight_text = get_business_insight(proba, input_data)
+                            insight_label, insight_text = get_business_insight(label, proba, input_data)
                         except Exception as e:
                             st.error(str(e))
 
