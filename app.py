@@ -33,6 +33,7 @@ NUMERIC_FEATURES = {
     'SatisfactionScore': (1, 5, 1),
     'DaySinceLastOrder': (0, 90, 1),
     'NumberOfAddress': (1, 5, 1),
+    'Complain': (0, 1, 1),
     'OrderAmountHikeFromlastYear': (0, 100, 1),
     'CouponUsed': (0, 50, 1),
     'OrderCount': (0, 80, 1),
