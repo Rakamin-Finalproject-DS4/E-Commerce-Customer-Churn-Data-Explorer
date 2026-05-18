@@ -1,6 +1,20 @@
 # E-Commerce Customer Churn Prediction
 
+## 👥 Tim Proyek
+
+**Batch 5 - Kelompok 4 MSIB Data Science**:
+1. Wesly Daud Siahaan
+2. Rizki Nurhafizd Achmad
+3. Dwi Mutiara Senen
+4. Muhammad Luthfi Nurhadi
+5. Chellcia Mutiara Iwfanka
+6. Arzad Lintang Maharani
+7. Muhammad Fathur Arkana
+
+---
+
 ## 📋 Daftar Isi
+- [Tim Proyek](#-tim-proyek)
 - [Deskripsi Proyek](#-deskripsi-proyek)
 - [Struktur Direktori](#-struktur-direktori)
 - [Hasil Model](#-hasil-model)
@@ -464,19 +478,6 @@ lambda: 0.5                # L2 regularization
 **Tertiary Metric: F1-Score**
 - **Why**: Balance between Recall & Precision
 - **Usage**: Overall model quality assessment
-
----
-
-## 👥 Tim Proyek
-
-**Batch 5 - Kelompok 4 MSIB Data Science**:
-1. Wesly Daud Siahaan
-2. Rizki Nurhafizd Achmad
-3. Dwi Mutiara Senen
-4. Muhammad Luthfi Nurhadi
-5. Chellcia Mutiara Iwfanka
-6. Arzad Lintang Maharani
-7. Muhammad Fathur Arkana
 
 ---
 
