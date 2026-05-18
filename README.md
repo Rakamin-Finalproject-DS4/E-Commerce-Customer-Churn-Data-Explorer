@@ -1,14 +1,14 @@
 # E-Commerce Customer Churn Prediction
 
 ## 📋 Daftar Isi
-- [Deskripsi Proyek](#deskripsi-proyek)
-- [Struktur Direktori](#struktur-direktori)
-- [Hasil Model](#hasil-model)
-- [Business Insights](#business-insights)
-- [Rekomendasi Bisnis](#rekomendasi-bisnis)
-- [Setup & Instalasi](#setup--instalasi)
-- [Panduan Penggunaan](#panduan-penggunaan)
-- [Dokumentasi Teknis](#dokumentasi-teknis)
+- [Deskripsi Proyek](#-deskripsi-proyek)
+- [Struktur Direktori](#-struktur-direktori)
+- [Hasil Model](#-hasil-model)
+- [Business Insights](#-business-insights)
+- [Rekomendasi Bisnis](#-rekomendasi-bisnis)
+- [Setup & Instalasi](#-setup--instalasi)
+- [Panduan Penggunaan](#-panduan-penggunaan)
+- [Dokumentasi Teknis](#-dokumentasi-teknis)
 
 ---
 
