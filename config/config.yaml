@@ -1,0 +1,171 @@
+# Configuration for E-Commerce Customer Churn Prediction Project
+# This file centralizes all configuration parameters for data processing and modeling
+
+# ============================================================================
+# DATA PATHS
+# ============================================================================
+data:
+  raw_path: "data/raw/E Commerce Dataset.xlsx"
+  raw_sheet: "E Comm"
+  processed_path: "data/processed/preprocessed_data.csv"
+  model_output_path: "data/processed/model_data.csv"
+
+# ============================================================================
+# NUMERICAL FEATURES
+# ============================================================================
+numerical_features:
+  - "Tenure"
+  - "CityTier"
+  - "WarehouseToHome"
+  - "HourSpendOnApp"
+  - "NumberOfDeviceRegistered"
+  - "SatisfactionScore"
+  - "DaySinceLastOrder"
+  - "NumberOfAddress"
+  - "OrderAmountHikeFromlastYear"
+  - "CouponUsed"
+  - "OrderCount"
+  - "CashbackAmount"
+
+# ============================================================================
+# CATEGORICAL FEATURES
+# ============================================================================
+categorical_features:
+  - "PreferredLoginDevice"
+  - "PreferredPaymentMode"
+  - "Gender"
+  - "PreferedOrderCat"
+  - "MaritalStatus"
+
+# ============================================================================
+# MISSING VALUES IMPUTATION STRATEGY
+# ============================================================================
+missing_values:
+  median_impute:
+    - "DaySinceLastOrder"
+    - "OrderAmountHikeFromlastYear"
+    - "Tenure"
+    - "OrderCount"
+    - "CouponUsed"
+    - "WarehouseToHome"
+  mean_impute:
+    - "HourSpendOnApp"
+
+# ============================================================================
+# OUTLIER DETECTION & HANDLING
+# ============================================================================
+outlier_handling:
+  method: "zscore"  # Options: "zscore", "iqr"
+  zscore_threshold: 3
+
+# ============================================================================
+# FEATURE TRANSFORMATION
+# ============================================================================
+feature_transformation:
+  normalization:
+    - "CashbackAmount"
+    - "NumberOfDeviceRegistered"
+    - "DaySinceLastOrder"
+  standardization:
+    - "Tenure"
+    - "WarehouseToHome"
+
+# ============================================================================
+# CATEGORICAL ENCODING
+# ============================================================================
+encoding:
+  label_encoding:
+    - "Gender"
+  onehot_encoding:
+    - "MaritalStatus"
+    - "PreferredLoginDevice"
+    - "PreferedOrderCat"
+
+# ============================================================================
+# FEATURE SELECTION & ENGINEERING
+# ============================================================================
+features:
+  drop_features:
+    - "CustomerID"
+    - "PreferredPaymentMode"  # Low correlation with target
+  extracted_features:
+    - "CustomerCategory"  # Bronze (0), Silver (1), Gold (2)
+
+# ============================================================================
+# CLASS IMBALANCE HANDLING
+# ============================================================================
+imbalance_handling:
+  method: "SMOTE"  # Options: "SMOTE", "RandomUnderSampler", "RandomOverSampler"
+  random_state: 42
+
+# ============================================================================
+# MODEL HYPERPARAMETERS
+# ============================================================================
+models:
+  xgboost:
+    type: "XGBClassifier"
+    random_state: 42
+    hyperparameters:
+      max_depth: 20
+      min_child_weight: 5
+      gamma: 0.5
+      tree_method: "auto"
+      colsample_bytree: 0.7
+      eta: 0.1
+      lambda: 0.5
+      alpha: 0.2
+  
+  random_forest:
+    type: "RandomForestClassifier"
+    random_state: 42
+    hyperparameters:
+      n_estimators: 200
+      max_depth: 20
+      min_samples_split: 5
+      min_samples_leaf: 2
+      max_features: "sqrt"
+      n_jobs: -1
+
+# ============================================================================
+# TRAIN-TEST SPLIT
+# ============================================================================
+train_test_split:
+  test_size: 0.3
+  random_state: 42
+
+# ============================================================================
+# TARGET VARIABLE
+# ============================================================================
+target:
+  name: "Churn"
+  binary_target: "churn_class"
+  churn_threshold: 0.8
+
+# ============================================================================
+# ARTIFACTS
+# ============================================================================
+artifacts:
+  scaler_path: "models/scaler.pkl"
+  model_path: "models/xgboost_model.pkl"
+  feature_list_path: "models/feature_list.pkl"
+  preprocessing_pipeline_path: "models/preprocessing_pipeline.pkl"
+
+# ============================================================================
+# MODEL EVALUATION METRICS
+# ============================================================================
+evaluation:
+  primary_metric: "recall"
+  metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1_score"
+    - "auc"
+  cross_validation: 5
+
+# ============================================================================
+# LOGGING
+# ============================================================================
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
