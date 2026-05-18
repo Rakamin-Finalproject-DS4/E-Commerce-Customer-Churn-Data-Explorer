@@ -7,6 +7,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 from plotly import graph_objects as go
+from streamlit.runtime.scriptrunner import RerunException
 
 st.set_page_config(
     page_title='Customer Churn Prediction',
@@ -232,6 +233,13 @@ def predict_input(input_data: dict, model, preprocessor, scaler):
         raise ValueError(f'Prediksi gagal: {exc}')
 
 
+def rerun_app():
+    if hasattr(st, 'experimental_rerun'):
+        st.experimental_rerun()
+    else:
+        raise RerunException()
+
+
 def get_business_insight(churn_prob: float, preferences: dict) -> tuple[str, str]:
     if churn_prob >= 0.8:
         return (
@@ -373,7 +381,7 @@ def main():
 
             if clear_button:
                 clear_inputs()
-                st.experimental_rerun()
+                rerun_app()
 
             if predict_button:
                 if model is None:
